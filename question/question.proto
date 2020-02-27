@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/empty.proto";
+
+extend google.protobuf.FileOptions {
+    string resource = 50002;
+}
+
+extend google.protobuf.ServiceOptions {
+    bool internal = 50010; // internal only service
+}
+
+extend google.protobuf.MessageOptions {
+    bool model = 50020;
+}
+
+extend google.protobuf.FieldOptions {
+    bool is_time = 50030;
+}
+
+package question.v1;
+
+option (resource) = "Question";
+
+message Time {}
+message Any {}
+message Empty {}
+
+enum QuestionType {
+    Text = 0;
+    Audio = 1;
+}
+
+// Resource
+message Question {
+    int64 Id = 1;
+    int64 UserId = 2;
+    int64 TopicId = 3;
+    string Title = 4;
+    string Content = 5;
+    QuestionType Type  = 6;
+    int64 Answers = 7;
+
+    Time CreatedAt = 20;
+    Time UpdatedAt = 21;
+}
+
+// Service
+service Service {
+    rpc Create(CreateRequest) returns (CreateResponse);
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+    rpc Update(UpdateRequest) returns (UpdateResponse);
+    rpc Get(GetRequest) returns (GetResponse);
+    rpc Query(QueryRequest) returns (QueryResponse);
+}
+
+message CreateRequest {
+    string Title = 1;
+    string Content = 2;
+    QuestionType Type  = 3;
+}
+
+message CreateResponse {
+    int64 Id = 1;
+}
+
+message DeleteRequest {
+    int64 Id = 1;
+}
+
+message DeleteResponse {
+    string result = 1;
+}
+
+message UpdateRequest {
+    int64 Id = 1;
+    map<string, Any> Attrs = 2;
+}
+
+message UpdateResponse {
+    string Result = 1;
+}
+
+message GetRequest {
+    int64 Id = 1;
+    map<string, Any> Filter = 2;
+}
+
+message GetResponse {
+    Question Result = 1;
+}
+
+message QueryRequest {
+    int64 Offset = 1;
+    int32 Limit = 2;
+    map<string, Any> Filter = 3;
+    string Sort = 4;
+}
+
+message QueryResponse {
+    repeated Question Results = 1;
+}
+
+// Event
+service Event {
+    option (internal) = true;
+    rpc HandleCreated(CreatedEvent) returns (Empty);
+    rpc HandleDeleted(DeletedEvent) returns (Empty);
+    rpc HandleUpdated(UpdatedEvent) returns (Empty);
+}
+
+message CreatedEvent {
+    Question Data = 1;
+}
+
+message DeletedEvent {
+    Question Data = 1;
+}
+
+message UpdatedEvent {
+    int64 Id = 1;
+    map<string, Any> Attrs = 2;
+}
