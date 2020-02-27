@@ -1,0 +1,209 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: DouYin service service
+  license:
+    name: MIT
+servers:
+  - url: 'http://localhost:8080'
+    description: local
+  - url: 'http://xxxx'
+    description: dev
+  - url: 'http://yyyyzzz'
+    description: prod
+
+paths:
+  /v1/Questions/create:
+    post:
+      summary: Create
+      tags:
+        - Question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRequest"  
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/CreateResponse"   
+  
+  /v1/Questions/delete:
+    post:
+      summary: Delete
+      tags:
+        - Question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteRequest"  
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"   
+  
+  /v1/Questions/update:
+    post:
+      summary: Update
+      tags:
+        - Question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateRequest"  
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/UpdateResponse"   
+  
+  /v1/Questions/get:
+    post:
+      summary: Get
+      tags:
+        - Question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetRequest"  
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/GetResponse"   
+  
+  /v1/Questions/query:
+    post:
+      summary: Query
+      tags:
+        - Question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryRequest"  
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/QueryResponse"   
+   
+
+components:
+  schemas:
+        
+      Question: 
+        type: object
+        properties:    
+          Id:
+            type: integer    
+          UserId:
+            type: integer    
+          TopicId:
+            type: integer    
+          Title:
+            type: string    
+          Content:
+            type: string    
+          Type: 
+            $ref: "#/components/schemas/QuestionType"    
+          Answers:
+            type: integer    
+          CreatedAt:
+            type: string    
+          UpdatedAt:
+            type: string
+        
+      CreateRequest: 
+        type: object
+        properties:    
+          Title:
+            type: string    
+          Content:
+            type: string    
+          Type: 
+            $ref: "#/components/schemas/QuestionType"
+        
+      CreateResponse: 
+        type: object
+        properties:    
+          Id:
+            type: integer
+        
+      DeleteRequest: 
+        type: object
+        properties:    
+          Id:
+            type: integer
+        
+      DeleteResponse: 
+        type: object
+        properties:    
+          result:
+            type: string
+        
+      UpdateRequest: 
+        type: object
+        properties:    
+          Id:
+            type: integer    
+          Attrs: 
+            type: object
+            
+        
+      UpdateResponse: 
+        type: object
+        properties:    
+          Result:
+            type: string
+        
+      GetRequest: 
+        type: object
+        properties:    
+          Id:
+            type: integer    
+          Filter: 
+            type: object
+            
+        
+      GetResponse: 
+        type: object
+        properties:    
+          Result: 
+            $ref: "#/components/schemas/Question"
+        
+      QueryRequest: 
+        type: object
+        properties:    
+          Offset:
+            type: integer    
+          Limit:
+            type: integer    
+          Filter: 
+            type: object
+                
+          Sort:
+            type: string
+        
+      QueryResponse: 
+        type: object
+        properties:    
+          Results:
+            type: array
+            items: 
+              $ref: "#/components/schemas/Question"
