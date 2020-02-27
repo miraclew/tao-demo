@@ -1,0 +1,5 @@
+_out/
+out/
+.vscode/
+.idea/
+.env
